@@ -30,8 +30,8 @@ function makeMiniTile( tileSize){
 			// draw the symbole
 			ctx.save();
 			if (this.mark == -1){  }
-			else if (this.mark == 0){ ctx.fillStyle = "pink"; ctx.rect(this.posX, this.posY, this.size, this.size); }
-			else if (this.mark == 1){ ctx.fillStyle = "black"; ctx.rect(this.posX, this.posY, this.size, this.size); }
+			else if (this.mark == true){ ctx.fillStyle = "pink"; ctx.fillRect(this.posX, this.posY, this.size, this.size); }
+			else if (this.mark == false){ ctx.fillStyle = "black"; ctx.fillRect(this.posX, this.posY, this.size, this.size); }
 
 			// draw the box
 			ctx.beginPath();

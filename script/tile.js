@@ -10,7 +10,7 @@ function makeTile( boardSize){
 		// Variables
 		posX: 0,
 		posY: 0,
-		mark: -1, // 0 = team 1, 1 = team 2, -1 is no mark.
+		mark: -1, // false = team 1, true = team 2, -1 is no mark.
 		playable: true, // wether or not a player can play here. 
 		tiles : [], // if it's an outer tile, it contains 9 other tiles in an array
 		size : boardSize/3, // size is dependant on wether it's inner or outer
@@ -19,16 +19,16 @@ function makeTile( boardSize){
 		// * go through the mini tiles and check if the minis were clicked.
 		clicked: function(x,y,team){
 			for(var j=0; j < 9; j++){
-			var mini = this.tiles[j];
+				var mini = this.tiles[j];
 
-			// check if the mouse x and y are inside a mini
-			if (x > mini.posX && x < mini.posX + mini.size){
-				if (y > mini.posY && y < mini.posY + mini.size){
-					console.log("Mini #"+mini.POS+" clicked.");
-					mini.clicked(x,y,team);
-				}
-			}	
-		}
+				// check if the mouse x and y are inside a mini
+				if (x > mini.posX && x < mini.posX + mini.size){
+					if (y > mini.posY && y < mini.posY + mini.size){
+						console.log("Mini:"+ mini.POS+" clicked.");
+						mini.clicked(team);
+					}
+				}	
+			}
 		},
 
 		generateMinis: function(x, y){
@@ -59,10 +59,10 @@ function makeTile( boardSize){
 			// draw the symbol
 			ctx.save();
 			if (this.mark == -1){  }
-			else if (this.mark == 0){ console.log("OH!"); }
-			else if (this.mark == 1){ console.log("EX!"); }
+			else if (this.mark == 0){  ctx.fillStyle = "pink"; ctx.fillRect(this.posX, this.posY, this.size, this.size); }
+			else if (this.mark == 1){  ctx.fillStyle = "black"; ctx.fillRect(this.posX, this.posY, this.size, this.size);}
 
-			// draw the big black box
+			// draw the big black rect
 			ctx.beginPath();
 			ctx.strokeStyle = "black";
 			ctx.lineWidth = 5;

@@ -6,7 +6,7 @@
 	var cursorY;
 	var boardSize = 500;
 	var rectSize = boardSize/9;
-	var teamTurn = 0;
+	var teamTurn = false;
 
 	/* init() is called when the page loads */
 	function init(){
@@ -60,13 +60,9 @@
 			// check if the mouse x and y are inside a tile
 			if (x > tile.posX && x < tile.posX + tile.size){
 				if (y > tile.posY && y < tile.posY + tile.size){
-					console.log("Tile: " + tile.POS + " clicked.")
+					console.log("Tile: " + tile.POS + " clicked.");
 					tile.clicked(x,y, teamTurn);
-
-					if (teamTurn == 0) 
-						teamTurn = 1;
-					else 
-						teamTurn = 0;
+					teamTurn = !teamTurn;
 				}
 			}	
 		}
