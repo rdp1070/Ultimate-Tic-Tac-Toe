@@ -25,7 +25,13 @@ function makeTile( boardSize){
 				if (x > mini.posX && x < mini.posX + mini.size){
 					if (y > mini.posY && y < mini.posY + mini.size){
 						console.log("Mini:"+ mini.POS+" clicked.");
-						mini.clicked(team);
+						if (mini.playable == true){
+							console.log("Mini:"+ mini.POS+" is playable.");
+							mini.clicked(team);
+							return true;
+						}	
+						else 
+							return false;
 					}
 				}	
 			}

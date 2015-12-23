@@ -18,6 +18,7 @@ function makeMiniTile( tileSize){
 		// * takes a team in and assigns a mark of the appropriate kind
 		clicked: function(team){
 			this.mark = team;
+			this.playable = false;
 		},		
 
 		drawTile: function(_ctx){

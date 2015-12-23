@@ -61,8 +61,10 @@
 			if (x > tile.posX && x < tile.posX + tile.size){
 				if (y > tile.posY && y < tile.posY + tile.size){
 					console.log("Tile: " + tile.POS + " clicked.");
-					tile.clicked(x,y, teamTurn);
-					teamTurn = !teamTurn;
+					if (tile.clicked(x,y, teamTurn) == true){
+						teamTurn = !teamTurn;
+					};
+					
 				}
 			}	
 		}
