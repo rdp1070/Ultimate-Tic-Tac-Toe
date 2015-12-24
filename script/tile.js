@@ -17,6 +17,7 @@ function makeTile( boardSize){
 		
 		// clicked
 		// * go through the mini tiles and check if the minis were clicked.
+		// * if the mini get's clicked return true, if not return false
 		clicked: function(x,y,team){
 			for(var j=0; j < 9; j++){
 				var mini = this.tiles[j];
@@ -35,6 +36,45 @@ function makeTile( boardSize){
 					}
 				}	
 			}
+		},
+
+		// checTilekWin()
+		// * check all the minis in the tile to see if the player wins the game.
+		checkTileWin: function(){
+
+			// Make sure all the tiles in the win sequence are the same
+			// and make sure that they aren't blank
+			// The win states are 
+			// 036 012 048 
+			if (this.tiles[0].mark == this.tiles[3].mark && this.tiles[3].mark== this.tiles[6].mark && this.tiles[6].mark != -1){
+				this.mark = this.tiles[0].mark;
+			}
+			else if (this.tiles[0].mark == this.tiles[1].mark && this.tiles[1].mark== this.tiles[2].mark && this.tiles[2].mark != -1){
+				this.mark = this.tiles[0].mark;
+			}
+			else if (this.tiles[0].mark == this.tiles[4].mark && this.tiles[4].mark== this.tiles[8].mark && this.tiles[8].mark != -1){
+				this.mark = this.tiles[0].mark;
+			}
+			// 147
+			else if (this.tiles[1].mark == this.tiles[4].mark && this.tiles[4].mark== this.tiles[7].mark && this.tiles[7].mark != -1){
+				this.mark = this.tiles[1].mark;
+			} 
+			// 246 258 
+			else if (this.tiles[2].mark == this.tiles[4].mark && this.tiles[4].mark== this.tiles[6].mark && this.tiles[6].mark != -1){
+				this.mark = this.tiles[2].mark;
+			}
+			else if (this.tiles[2].mark == this.tiles[5].mark && this.tiles[5].mark== this.tiles[8].mark && this.tiles[8].mark != -1){
+				this.mark = this.tiles[2].mark;
+			}
+			// 345
+			else if (this.tiles[3].mark == this.tiles[4].mark && this.tiles[4].mark== this.tiles[5].mark && this.tiles[5].mark != -1){
+				this.mark = this.tiles[3].mark;
+			}
+			// 678
+			else if (this.tiles[6].mark == this.tiles[7].mark && this.tiles[7].mark== this.tiles[8].mark && this.tiles[8].mark != -1){
+				this.mark = this.tiles[6].mark;
+			}
+			// Check all of the cases for the minis
 		},
 
 		generateMinis: function(x, y){
@@ -65,8 +105,8 @@ function makeTile( boardSize){
 			// draw the symbol
 			ctx.save();
 			if (this.mark == -1){  }
-			else if (this.mark == 0){  ctx.fillStyle = "pink"; ctx.fillRect(this.posX, this.posY, this.size, this.size); }
-			else if (this.mark == 1){  ctx.fillStyle = "black"; ctx.fillRect(this.posX, this.posY, this.size, this.size);}
+			else if (this.mark == true){  ctx.fillStyle = "pink"; ctx.fillRect(this.posX, this.posY, this.size, this.size); }
+			else if (this.mark == false){  ctx.fillStyle = "black"; ctx.fillRect(this.posX, this.posY, this.size, this.size);}
 
 			// draw the big black rect
 			ctx.beginPath();

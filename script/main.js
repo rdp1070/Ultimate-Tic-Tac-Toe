@@ -6,7 +6,8 @@
 	var cursorY;
 	var boardSize = 500;
 	var rectSize = boardSize/9;
-	var teamTurn = false;
+	var playerOneTurn = true;
+	var winner = -1; 
 
 	/* init() is called when the page loads */
 	function init(){
@@ -53,6 +54,10 @@
 		 
 	} // end function setupUI
 	
+
+	// checkCollision(x,y)
+	// * takes in the mouse X and Y and checks the big tiles
+	// * if it is clicked pass down the x and y to the clicked function
 	function checkCollision(x,y){
 		for(var j=0; j < 9; j++){
 			var tile = board[j];
@@ -60,14 +65,54 @@
 			// check if the mouse x and y are inside a tile
 			if (x > tile.posX && x < tile.posX + tile.size){
 				if (y > tile.posY && y < tile.posY + tile.size){
+					// post the position of the Tile on the console
 					console.log("Tile: " + tile.POS + " clicked.");
-					if (tile.clicked(x,y, teamTurn) == true){
-						teamTurn = !teamTurn;
+					if (tile.clicked(x,y, playerOneTurn) == true){
+						playerOneTurn = !playerOneTurn;
 					};
 					
 				}
 			}	
 		}
+	}
+
+	// checkWin()
+	// * check all the tiles in the board to see if the player wins the game.
+	function checkWin(){
+
+		// Make sure all the tiles in the win sequence are the same
+		// and make sure that they aren't blank
+		// The win states are 
+		// 036 012 048 
+		if (board[0].mark == board[3].mark && board[3].mark== board[6].mark && board[6].mark != -1){
+			console.log("WIN!")
+		}
+		else if (board[0].mark == board[1].mark && board[1].mark== board[2].mark && board[2].mark != -1){
+			console.log("WIN!")
+		}
+		else if (board[0].mark == board[4].mark && board[4].mark== board[8].mark && board[8].mark != -1){
+			console.log("WIN!")
+		}
+		// 147
+		else if (board[1].mark == board[4].mark && board[4].mark== board[7].mark && board[7].mark != -1){
+			console.log("WIN!")
+		} 
+		// 246 258 
+		else if (board[2].mark == board[4].mark && board[4].mark== board[6].mark && board[6].mark != -1){
+			console.log("WIN!")
+		}
+		else if (board[2].mark == board[5].mark && board[5].mark== board[8].mark && board[8].mark != -1){
+			console.log("WIN!")
+		}
+		// 345
+		else if (board[3].mark == board[4].mark && board[4].mark== board[5].mark && board[5].mark != -1){
+			console.log("WIN!")
+		}
+		// 678
+		else if (board[6].mark == board[7].mark && board[7].mark== board[8].mark && board[8].mark != -1){
+			console.log("WIN!")
+		}
+		// Check all of the cases for the tiles
 	}
 
 	//
@@ -112,7 +157,7 @@
 	//
 	// CANVAS DRAWING CODE
 	//
-	function drawBoard(x,y){
+	function drawBoard(){
 		
 		//draw the background of the board
 		ctx.strokeStyle = "black";
@@ -138,14 +183,21 @@
 		if (playerOneTurn == true)	
 			ctx.fillText("Player One's Turn", 10, 50);
 		else
-			ctx.fillText("Player One's Turn", 10, 50);
+			ctx.fillText("Player Two's Turn", 10, 50);
 	}
 
 
 	function update(){
 		requestAnimationFrame(update);
 
-		drawBoard(1,1);
+		drawBoard();
+		drawTurn();
+
+		for(var j=0; j < 9; j++){
+			var tile = board[j];
+			tile.checkTileWin();
+		}
+		checkWin();
 	}
 
 	window.onload = init;
