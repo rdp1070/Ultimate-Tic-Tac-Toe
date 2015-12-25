@@ -28,11 +28,8 @@ function makeTile( boardSize){
 						console.log("Mini:"+ mini.POS+" clicked.");
 						if (mini.playable == true){
 							console.log("Mini:"+ mini.POS+" is playable.");
-							mini.clicked(team);
-							return true;
+							return mini.clicked(team);
 						}	
-						else 
-							return false;
 					}
 				}	
 			}

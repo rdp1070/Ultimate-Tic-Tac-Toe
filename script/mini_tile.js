@@ -19,6 +19,7 @@ function makeMiniTile( tileSize){
 		clicked: function(team){
 			this.mark = team;
 			this.playable = false;
+			return this.POS;
 		},		
 
 		drawTile: function(_ctx){

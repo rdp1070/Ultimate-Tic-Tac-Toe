@@ -67,13 +67,31 @@
 				if (y > tile.posY && y < tile.posY + tile.size){
 					// post the position of the Tile on the console
 					console.log("Tile: " + tile.POS + " clicked.");
-					if (tile.clicked(x,y, playerOneTurn) == true){
-						playerOneTurn = !playerOneTurn;
-					};
-					
+					if (tile.playable == true){		
+						// if the clicked function returns the mini number that was clicked
+						// this allows you to set which one 
+						var nextMove = tile.clicked(x,y, playerOneTurn);
+						if (nextMove || nextMove == 0){
+							playerOneTurn = !playerOneTurn;
+							setPlayable(nextMove);
+						};
+					}
 				}
 			}	
 		}
+	}
+
+	// setPlayable()
+	// * a function that takes in an index and set's every other tile to 
+	// * unplayable. 
+	function setPlayable(index){
+		for (var i = 0; i < 9; i++) {
+			if (i != index){
+				board[i].playable = false;	
+			} else {
+				board[i].playable = true;
+			}
+		};
 	}
 
 	// checkWin()
