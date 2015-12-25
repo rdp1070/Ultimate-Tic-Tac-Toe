@@ -32,8 +32,22 @@ function makeMiniTile( tileSize){
 			// draw the symbole
 			ctx.save();
 			if (this.mark == -1){  }
-			else if (this.mark == true){ ctx.fillStyle = "pink"; ctx.fillRect(this.posX, this.posY, this.size, this.size); }
-			else if (this.mark == false){ ctx.fillStyle = "black"; ctx.fillRect(this.posX, this.posY, this.size, this.size); }
+			else if (this.mark == true){ 
+				ctx.beginPath();
+				ctx.arc(this.posX + this.size/2, this.posY +this.size/2, this.size/3, 0, 2 * Math.PI); 
+				 ctx.lineWidth = 3;
+				ctx.stroke();
+			}
+			else if (this.mark == false){  ctx.beginPath();
+
+			    ctx.moveTo(this.posX, this.posY);
+			    ctx.lineTo(this.posX + this.size, this.posY + this.size);
+
+			    ctx.moveTo(this.posX + this.size, this.posY);
+			    ctx.lineTo(this.posX, this.posY + this.size);
+			    ctx.lineWidth = 3;
+			    ctx.stroke();
+			}
 
 			// draw the box
 			ctx.beginPath();
