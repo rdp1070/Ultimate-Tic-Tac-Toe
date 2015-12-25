@@ -85,13 +85,22 @@
 	// * a function that takes in an index and set's every other tile to 
 	// * unplayable. 
 	function setPlayable(index){
-		for (var i = 0; i < 9; i++) {
-			if (i != index){
-				board[i].playable = false;	
-			} else {
-				board[i].playable = true;
-			}
-		};
+		if (board[index].mark != -1){
+			for (var i = 0; i < 9; i++) {
+				if (board[i].mark == -1){
+					board[i].playable = true;
+				}
+			};
+		}
+		else {
+			for (var i = 0; i < 9; i++) {
+				if (i != index){
+					board[i].playable = false;	
+				} else {
+					board[i].playable = true;
+				}
+			};
+		}
 	}
 
 	// checkWin()
