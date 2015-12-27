@@ -19,7 +19,7 @@
 		canvas.addEventListener("mouseleave", doMouseleave);
 		for (var i=0; i<9; i++){
 			// make the new Tile
-			var newTile = makeTile(this.boardSize);
+			var newTile = makeTile(boardSize);
 			newTile.POS = i;
 			var vertPos = Math.floor(i/3); 
 			var horzPos = i%3;
@@ -43,7 +43,9 @@
 		
 		/* save button */
 		document.querySelector("#newGameButton").onclick = function(e){
-			//Reset the array that controls the 	
+			//Reset the array that controls the game.
+			console.log("pressed new game");
+			init();
 		};
 		
 		/* board */
