@@ -5,6 +5,7 @@
 	var cursorX;
 	var cursorY;
 	var boardSize = 500;
+	var boardPos = {x: 0, y: 50};
 	var rectSize = boardSize/9;
 	var playerOneTurn = true;
 	var winner = -1; 
@@ -17,14 +18,17 @@
 		canvas.addEventListener("mousemove", doMousemove);
 		canvas.addEventListener("mouseup", doMouseup);
 		canvas.addEventListener("mouseleave", doMouseleave);
+		canvas.height = boardSize + boardPos.y;
+		canvas.width = boardSize + boardPos.x;
+
 		for (var i=0; i<9; i++){
 			// make the new Tile
 			var newTile = makeTile(boardSize);
 			newTile.POS = i;
 			var vertPos = Math.floor(i/3); 
 			var horzPos = i%3;
-			newTile.posY = vertPos * boardSize/3;
-			newTile.posX = horzPos * boardSize/3;
+			newTile.posY = (vertPos * boardSize/3) + boardPos.y;
+			newTile.posX = (horzPos * boardSize/3) + boardPos.x;
 			// make the mini tiles inside the tiles
 			newTile.generateMinis( newTile.posX, newTile.posY);
 			// add the tile onto the board
@@ -47,9 +51,10 @@
 			console.log("pressed new game");
 			init();
 		};
-		
+
+	
 		/* board */
-		drawBoard(1, 1);
+		drawBoard(boardPos.x ,boardPos.y);
 		/* other UI elements */
 
 
@@ -186,12 +191,12 @@
 	//
 	// CANVAS DRAWING CODE
 	//
-	function drawBoard(){
+	function drawBoard(x,y){
 		
 		//draw the background of the board
 		ctx.strokeStyle = "black";
-		ctx.fillStyle = "white";
-		ctx.fillRect(0, 0, boardSize, boardSize);
+		ctx.fillStyle = "pink";
+		ctx.fillRect(x, y, boardSize, boardSize);
 	
 		for(var i=0; i < 9; i++){
 			// draw tiles 1- 9
