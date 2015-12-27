@@ -210,9 +210,9 @@
 		ctx.font = "30px Arial";
 
 		if (playerOneTurn == true)	
-			ctx.fillText("Player One's Turn", 10, 50);
+			ctx.fillText("O's Turn", 10, 50);
 		else
-			ctx.fillText("Player Two's Turn", 10, 50);
+			ctx.fillText("X's Turn", 10, 50);
 	}
 
 
