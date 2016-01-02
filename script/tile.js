@@ -122,15 +122,15 @@ function makeTile( boardSize){
 
 			// draw the big black rect
 			ctx.beginPath();
-			ctx.strokeStyle = "black";
+			ctx.strokeStyle = colorScheme.color1;
 			ctx.lineWidth = 5;
 			ctx.rect(this.posX, this.posY, this.size, this.size);
 			ctx.stroke();
 
 			// grey it out if it's unplayable
 			if ( this.playable == false ) {
-				ctx.globalAlpha = 0.2;
-				ctx.fillStyle = "grey";
+				ctx.globalAlpha = 0.5;
+				ctx.fillStyle = colorScheme.color4;
 				ctx.fillRect(this.posX, this.posY, this.size, this.size);
 			}
 

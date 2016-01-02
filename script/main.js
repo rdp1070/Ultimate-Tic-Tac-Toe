@@ -9,6 +9,16 @@
 	var rectSize = boardSize/9;
 	var playerOneTurn = true;
 	var winner = -1; 
+	var team1Wins = 0;
+	var team2Wins = 0;
+	var colorScheme = 
+	{
+		background: "#FFDD4A",
+		color1: "#094074",
+		color2: "#3C6997",
+		color3: "#5ADBFF",
+		color4: "#FE9000"
+	};
 
 	/* init() is called when the page loads */
 	function init(){
@@ -18,8 +28,11 @@
 		canvas.addEventListener("mousemove", doMousemove);
 		canvas.addEventListener("mouseup", doMouseup);
 		canvas.addEventListener("mouseleave", doMouseleave);
+		window.addEventListener("keypress", doKeypress);
 		canvas.height = boardSize + boardPos.y;
 		canvas.width = boardSize + boardPos.x;
+
+		winner = -1;
 
 		for (var i=0; i<9; i++){
 			// make the new Tile
@@ -80,6 +93,7 @@
 						var nextMove = tile.clicked(x,y, playerOneTurn);
 						if (nextMove || nextMove == 0){
 							playerOneTurn = !playerOneTurn;
+							board[nextMove].checkTileWin();
 							setPlayable(nextMove);
 						};
 					}
@@ -92,13 +106,17 @@
 	// * a function that takes in an index and set's every other tile to 
 	// * unplayable. 
 	function setPlayable(index){
+		// if the tile has a mark, set all of the tiles to playable. 
 		if (board[index].mark != -1){
 			for (var i = 0; i < 9; i++) {
 				if (board[i].mark == -1){
 					board[i].playable = true;
+				} else{
+					board[i].playable = false;
 				}
 			};
-		}
+		} // end if
+		// otherwise set the appropriate tile to playable.
 		else {
 			for (var i = 0; i < 9; i++) {
 				if (i != index){
@@ -108,7 +126,15 @@
 				}
 			};
 		}
-	}
+	} // end of setPlayable()
+
+	// gameOver()
+	// Set all the tiles to unplayable 
+	function gameOver(){
+		for (var i=0; i < 9; i++){
+			board[i].playable = false;
+		}
+	}// end of gameOver()
 
 	// checkWin()
 	// * check all the tiles in the board to see if the player wins the game.
@@ -119,44 +145,66 @@
 		// The win states are 
 		// 036 012 048 
 		if (board[0].mark == board[3].mark && board[3].mark== board[6].mark && board[6].mark != -1){
-			console.log("WIN!")
+			drawWin(board[0].mark);
+			winner = board[0].mark;
+			gameOver();
 		}
 		else if (board[0].mark == board[1].mark && board[1].mark== board[2].mark && board[2].mark != -1){
-			console.log("WIN!")
+			drawWin(board[0].mark);
+			winner = board[0].mark;
+			gameOver();
 		}
 		else if (board[0].mark == board[4].mark && board[4].mark== board[8].mark && board[8].mark != -1){
-			console.log("WIN!")
+			drawWin(board[0].mark);
+			winner = board[0].mark;
+			gameOver();
 		}
 		// 147
 		else if (board[1].mark == board[4].mark && board[4].mark== board[7].mark && board[7].mark != -1){
-			console.log("WIN!")
+			drawWin(board[1].mark);
+			winner = board[1].mark;
+			gameOver();
 		} 
 		// 246 258 
 		else if (board[2].mark == board[4].mark && board[4].mark== board[6].mark && board[6].mark != -1){
-			console.log("WIN!")
+			drawWin(board[2].mark);
+			winner = board[2].mark;
+			gameOver();
 		}
 		else if (board[2].mark == board[5].mark && board[5].mark== board[8].mark && board[8].mark != -1){
-			console.log("WIN!")
+			drawWin(board[2].mark);
+			winner = board[2].mark;
+			gameOver();
 		}
 		// 345
 		else if (board[3].mark == board[4].mark && board[4].mark== board[5].mark && board[5].mark != -1){
-			console.log("WIN!")
+			drawWin(board[3].mark);
+			winner = board[3].mark;
+			gameOver();
 		}
 		// 678
 		else if (board[6].mark == board[7].mark && board[7].mark== board[8].mark && board[8].mark != -1){
-			console.log("WIN!")
+			drawWin(board[6].mark);
+			winner = board[6].mark;
+			gameOver();
 		}
 		// Check all of the cases for the tiles
 	}
 
 	//
-	// MOUSE STUFF
+	// EVENT STUFF
 	//
 	function getMouse(e){
 		var mouse = {}
 		mouse.x = e.pageX - e.target.offsetLeft;
 		mouse.y = e.pageY - e.target.offsetTop;
 		return mouse;
+	}
+
+	function doKeypress(e){
+		if (e.keyCode == 114){
+			init();
+		}
 	}
 
 	function doMouseup(e){
@@ -180,7 +228,7 @@
 	
 
 	function doMouseleave(e){
-			// YOUR COOL MOUSELEAVE CODE GOES HERE
+		// YOUR COOL MOUSELEAVE CODE GOES HERE
 		//
 		//
 		//
@@ -193,9 +241,12 @@
 	//
 	function drawBoard(x,y){
 		
+		ctx.fillStyle = colorScheme.color2;
+		ctx.fillRect(0, 0, boardSize, boardSize);
+
 		//draw the background of the board
-		ctx.strokeStyle = "black";
-		ctx.fillStyle = "pink";
+		ctx.strokeStyle = colorScheme.color3;
+		ctx.fillStyle = "white";
 		ctx.fillRect(x, y, boardSize, boardSize);
 	
 		for(var i=0; i < 9; i++){
@@ -210,22 +261,39 @@
 			
 	}
 
-	function drawTurn(){
-		ctx.fillStyle = "black";
+	function drawBar(){
+		ctx.fillStyle = colorScheme.color3;
 		ctx.font = "30px Arial";
 
-		if (playerOneTurn == true)	
-			ctx.fillText("O's Turn", 10, 50);
-		else
-			ctx.fillText("X's Turn", 10, 50);
+		if (playerOneTurn == true){
+			ctx.fillText("O's Turn", 10, 40);
+			ctx.fillText("[R]estart", 150, 40);
+		}
+		else {
+			ctx.fillText("X's Turn", 10, 40);
+			ctx.fillText("[R]estart", 150, 40);
+		}
 	}
 
+	function drawWin(mark){
+		ctx.font = "50px Arial";
+		if (mark == 1) {
+			ctx.fillText("O's Win!", boardSize/2, boardSize/2);
+			ctx.font = "10px Arial";
+			ctx.fillText("Hold [R] to restart.", boardSize/2, boardSize/2 + 20);
+		}
+		else {
+			ctx.fillText("X's Win!", boardSize/2, boardSize/2);
+			ctx.font = "10px Arial";
+			ctx.fillText("Hold [R] to restart.", boardSize/2, boardSize/2 + 20);
+		}
+	}
 
 	function update(){
 		requestAnimationFrame(update);
 
 		drawBoard();
-		drawTurn();
+		drawBar();
 
 		for(var j=0; j < 9; j++){
 			var tile = board[j];

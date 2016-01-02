@@ -26,10 +26,10 @@ function makeMiniTile( tileSize){
 			var ctx = _ctx;
 
 			// clear
-			ctx.fillStyle = "white";
+			ctx.fillStyle = colorScheme.background;
 			ctx.fillRect(this.posX, this.posY, this.size, this.size);
 
-			// draw the symbole
+			// draw the symbol
 			ctx.save();
 			if (this.mark == -1){  }
 			else if (this.mark == true){ 
