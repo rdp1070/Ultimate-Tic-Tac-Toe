@@ -19,6 +19,7 @@
 		color3: "#5ADBFF",
 		color4: "#FE9000"
 	};
+	var display_tutorial = true;
 
 	/* init() is called when the page loads */
 	function init(){
@@ -202,15 +203,21 @@
 	}
 
 	function doKeypress(e){
+		// if you hit r restart the game
 		if (e.keyCode == 114){
 			init();
+		}
+		if (e.keyCode == 47){
+			display_tutorial = !display_tutorial;
 		}
 	}
 
 	function doMouseup(e){
-			var mouse = getMouse(e);
-			console.log(mouse.x + "," + mouse.y );
+		var mouse = getMouse(e);
+		console.log(mouse.x + "," + mouse.y );
+		if (display_tutorial == false){
 			checkCollision(mouse.x,mouse.y);
+		}
 	}// end function doMouseup(e)
 	
 	function doMousedown(e){
@@ -261,20 +268,26 @@
 			
 	}
 
+	// drawBar()
+	// * Draw the top bar with the Turn and commands
 	function drawBar(){
 		ctx.fillStyle = colorScheme.color3;
 		ctx.font = "30px Arial";
 
 		if (playerOneTurn == true){
 			ctx.fillText("O's Turn", 10, 40);
-			ctx.fillText("[R]estart", 150, 40);
 		}
 		else {
 			ctx.fillText("X's Turn", 10, 40);
-			ctx.fillText("[R]estart", 150, 40);
 		}
+
+		ctx.fillText("[R]estart", 150, 40);
+		ctx.fillText("(?)Help", 280, 40);
 	}
 
+
+	// drawWin()
+	// * Draw who won the game on top of everything
 	function drawWin(mark){
 		ctx.font = "50px Arial";
 		if (mark == 1) {
@@ -289,12 +302,38 @@
 		}
 	}
 
+	// drawTutorial
+	// * Draw the overlay that is the tutorial on top of the game
+	function drawTutorial(x,y){
+		ctx.save();
+		ctx.font = "30px Arial";
+		ctx.fillStyle = "white";
+		ctx.globalAlpha= .9;
+		ctx.fillRect(x, y, boardSize, boardSize);
+		
+		ctx.save();
+		ctx.globalAlpha = 1;
+		ctx.fillStyle = "black";
+		ctx.fillText("Instructions:", x + 70, y+ 50);
+		ctx.font = "22px Arial";
+		ctx.fillText("Take turns placing your shape.", x + 70, y+ 100);
+		ctx.fillText("Where you place inside the tile,", x + 70, y+ 140);
+		ctx.fillText("determines the next place in the big game.", x + 70, y+ 160);
+		ctx.fillText("If made to play on an already won tile", x + 70, y+ 200);
+		ctx.fillText("the player gets to place anywhere!", x + 70, y+ 220);
+		ctx.restore();
+
+		ctx.restore();
+	}
+
 	function update(){
 		requestAnimationFrame(update);
 
-		drawBoard();
+		drawBoard(boardPos.x ,boardPos.y);
 		drawBar();
-
+		if (display_tutorial == true){
+			drawTutorial(boardPos.x, boardPos.y);
+		}
 		for(var j=0; j < 9; j++){
 			var tile = board[j];
 			tile.checkTileWin();
